@@ -1,12 +1,11 @@
 #ifndef __JB_TIME_H__
 #define __JB_TIME_H__
 
+#include <stdio.h>
 #if __linux
 #include <sys/time.h>
-#include <stdio.h>
 #else
 #include <windows.h>
-#include <stdio.h>
 #endif
 
 typedef long long my_time_t;
