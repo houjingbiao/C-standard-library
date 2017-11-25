@@ -14,7 +14,6 @@ struct tm//时间组成类型
 };
 
 //描述：
-//说明
 //参数：
 //返回：
 
@@ -56,4 +55,227 @@ struct tm *localtime(const time_t *timer);
 size_t strftime(char *s, size_t maxsize, const char *format, const struct tm *timeptr);
 
 
-文件读写
+
+#include <stdio.h>
+FILE
+fpos_t
+_IOFBF
+_IOLBF
+_IONBF
+BUFSIZ
+FOPEN_MAX
+FILENAME_MAX
+L_tmpnam
+SEEK_CUR
+SEEK_END
+SEEK_SET
+TMP_MAX
+stderr
+stdin
+stdout
+
+
+//文件操作
+//描述：导致一个文件再也不能通过它的文件名进行访问了
+//参数：
+//返回：成功0，否则非零
+int remove(const char *filename);
+//描述：
+//参数：
+//返回：
+int rename(const char *old, const char *new);
+//描述：
+//参数：
+//返回：
+FILE *tmpfile(void);
+//描述：
+//参数：
+//返回：
+char *tmpnam(char *s);
+
+//文件访问
+//描述：
+//参数：
+//返回：
+int fclose(FILE *stream);
+//描述：
+//参数：
+//返回：
+int fflush(FILE *stream);
+//描述：
+//参数：
+//返回：
+FILE* fopen(const char *filename, const char *mode);
+//描述：
+//参数：
+//返回：
+FILE* freopen(const char *filename, const char *mode, FILE *stream);
+//描述：
+//参数：
+//返回：
+void setbuf(FILE *stream, char *buf);
+//描述：
+//参数：
+//返回：
+int setvbuf(FILE *stream, char *buf, int mode, size_t size);
+
+//格式化输出
+//描述：
+//参数：
+//返回：
+int fprintf(FILE *stream, const char *format, ... );
+//描述：
+//参数：
+//返回：
+int fscanf(FILE *stream, const char *format, ... );
+
+//描述：
+//参数：
+//返回：
+int printf(const char *format, ...);
+
+//描述：
+//参数：
+//返回：
+int scanf(const char *format, ...);
+
+//描述：
+//参数：
+//返回：
+int sprintf(char *s, const char* format, ...);
+
+//描述：
+//参数：
+//返回：
+int sscanf(const char *s, const char* format, ...);
+
+//描述：
+//参数：
+//返回：
+int vfprintf(FILE *stream, const char *format, va_list arg);
+
+//描述：
+//参数：
+//返回：
+int vprintf(const char *format, va_list arg);
+
+//描述：
+//参数：
+//返回：
+int vsprintf(char *s, const char *format, va_list arg);
+
+
+//字符输入输出函数
+//描述：
+//参数：
+//返回：
+int fgetc(FILE *stream);
+
+//描述：
+//参数：
+//返回：
+char *fgets(char *s, int n, FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int fputc(int c, FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int fputs(const char *s, FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int getc(FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int getchar(void);
+
+//描述：
+//参数：
+//返回：
+char *gets(char *s);
+
+//描述：
+//参数：
+//返回：
+int putc(int c, FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int putchar(int c);
+
+//描述：
+//参数：
+//返回：
+int puts(const char *s);
+
+//描述：
+//参数：
+//返回：
+int ungetc(int c, FILE *stream);
+
+//描述：
+//参数：
+//返回：
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+//描述：
+//参数：
+//返回：
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+
+//文件定位函数
+//描述：
+//参数：
+//返回：
+int fgetpos(FILE *stream, fpos_t *pos);
+
+//描述：
+//参数：
+//返回：
+int fseek(FILE *stream, long int offset, int whence);
+
+//描述：
+//参数：
+//返回：
+int fsetpos(FILE *stream, fpos_t *pos);
+
+//描述：
+//参数：
+//返回：
+long int ftell(FILE *stream);
+
+//描述：
+//参数：
+//返回：
+void rewind(FILE *stream);
+
+//错误处理函数
+
+//描述：
+//参数：
+//返回：
+void clearerr(FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int feof(FILE *stream);
+
+//描述：
+//参数：
+//返回：
+int ferror(FILE *stream);
+
+//描述：
+//参数：
+//返回：
+void perror(const char *s);
