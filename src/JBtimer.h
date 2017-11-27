@@ -6,8 +6,10 @@
 
 typedef long long my_time_t;
 
-my_time_t gettime_second();
-my_time_t gettime_millisecond();
+my_time_t gettime_second(); //√Î
+my_time_t gettime_millisecond(); //∫¡√Î
+my_time_t gettime_microsecond(); //Œ¢√Î
+
 
 
 

@@ -14,16 +14,15 @@ my_time_t gettime_second()
 }
 
 
-#if __linux
+
 my_time_t gettime_millisecond()
 {
+#if __linux
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
 	return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
 #else
-my_time_t gettime_millisecond()
-{
+
 	// 获取微秒级别的系统时间
 	SYSTEMTIME tval;
 	GetLocalTime(&tval);
@@ -42,7 +41,24 @@ my_time_t gettime_millisecond()
 	// 转换获得微秒级别时间
 	my_time_t abc = (my_time_t)mktime(&tval_sec) * 1000 + tval.wMilliseconds;
 	return abc;
+#endif
 }
 
+my_time_t gettime_microsecond()
+{
+#if __linux
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return tv.tv_sec * 1000000 + tv.tv_usec;
+#else
+	LARGE_INTEGER f;
+	QueryPerformanceFrequency(&f);
+	double dqfreq = f.QuadPart;
 
+	LARGE_INTEGER tt;
+	QueryPerformanceCounter(&tt);
+
+	return tt.QuadPart / dqfreq * 1000000;
 #endif
+}
+
