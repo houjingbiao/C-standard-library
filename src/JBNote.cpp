@@ -66,7 +66,7 @@ NULL
 _IOFBF //作为setvbuf的参数使用
 _IOLBF //作为setvbuf的参数使用
 _IONBF //作为setvbuf的参数使用
-BUFSIZ //展开为一个整值常量表达式，指的是setbuf函数使用的缓冲大小
+BUFSIZ //展开为一个整值常量表达式，指的是setbuf函数使用的缓冲的最小值
 EOF //流结束
 FOPEN_MAX //最多同时打开的文件数
 FILENAME_MAX //文件名长度
@@ -131,16 +131,21 @@ int fflush(FILE *stream);
 //1.在windows系统中，文本模式下，文件以"\r\n"代表换行。若以文本模式打开文件，并用fputs等函数写入换行符"\n"时，函数会自动在"\n"前面加上"\r"。即实际写入文件的是"\r\n" 。
 //2.在类Unix / Linux系统中文本模式下，文件以"\n"代表换行。所以Linux系统中在文本模式和二进制模式下并无区别。
 FILE* fopen(const char *filename, const char *mode);
-//描述：
-//参数：
-//返回：
+//描述：把一个新的文件名 filename 与给定的打开的流 stream 关联，同时关闭流中的旧文件。
+//参数：参数stream执行FILE对象，标识了要被重新打开的流
+//返回：成功返回一个只想标识流的指针，否则NULL
 FILE* freopen(const char *filename, const char *mode, FILE *stream);
-//描述：
-//参数：
+//描述：定义流 stream 应如何缓冲。该函数应在与流 stream 相关的文件被打开时，且还未发生任何输入或输出操作之前被调用一次。
+//参数：将buf缓冲分配给stream使用，buf长度至少为BUFSIZ
 //返回：
 void setbuf(FILE *stream, char *buf);
-//描述：
-//参数：
+//描述：定义流 stream 应如何缓冲。
+//参数：stream同上，buf缓冲为NULL时，该函数自动分配一个指定大小的缓冲，
+//mode缓冲模式，
+//_IOFBF全缓冲：对于输出，数据在缓冲填满时被一次性写入。对于输入，缓冲会在请求输入且缓冲为空时被填充。
+//_IOLBF行缓冲：对于输出，数据在遇到换行符或者在缓冲填满时被写入，具体视情况而定。对于输入，缓冲会在请求输入且缓冲为空时被填充，直到遇到下一个换行符。
+//_IONBF	无缓冲：不使用缓冲。每个 I / O 操作都被即时写入。buffer 和 size 参数被忽略。
+//size --这是缓冲的大小，以字节为单位。
 //返回：
 int setvbuf(FILE *stream, char *buf, int mode, size_t size);
 
