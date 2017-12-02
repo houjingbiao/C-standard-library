@@ -505,4 +505,72 @@ wchar_t //这是一个宽字符常量大小的整数类型。
 NULL //
 
 //这会生成一个类型为 size_t 的整型常量，它是一个结构成员相对于结构开头的字节偏移量。成员是由 member - designator 给定的，结构的名称是在 type 中给定的。
-offset(type, member-designator)
+offset(type, member - designator)
+
+#include "string.h"
+size_t
+
+NULL
+
+//
+void * memchr(const void *str, int c, size_t n);
+
+int memcmp(const void *str1, const void *src, size_t n);
+
+void memcpy(void *dest, const void*src, size_t n);
+
+void memmove(void *dest, const void*src, size_t n);
+
+void *memset(void *str, int c, size_t n);
+
+
+char *strcat(char *dest, const char *src);
+
+char *strncat(char *dest, const char *stc, size_t n);
+
+char *strchr(const char *str, int c);
+
+int strcmp(const char *str1, const char *str2);
+
+int strncmp(const char *str1, const char *str2, size_t n);
+
+int strcoll(const char *str1, const char *str2);
+
+int *strcpy(char *dest, const char *src);
+
+size_t strcspn(const char *str1, const char *str2);
+
+char *strerror(int errnum);
+
+size_t strlen(const char* str);
+
+char *strpbrk(const char *str1, const char *str2);
+
+char *strrchr(const char *str, int c);
+
+size_t strspn(const char* str1, const char* str2);
+
+char *strstr(const char *haystack, const char *needle);
+
+char *strtok(char *str, const char *delim);
+
+size_t strxfrm(char *dest, const char *str, size_t n);
+
+#include "signal.h"
+//定义了一个变量类型 sig_atomic_t、两个函数调用和一些宏来处理程序执行期间报告的不同信号。
+sig_atomic_t
+
+SIG_DFL
+SIG_ERR
+SIG_IGN
+
+SIGABRT
+SIGFPE
+SIGILL
+SIGINT
+SIGSEGV //
+SIGTERM //发送给本程序的终止请求信号。
+
+void (*signal(int sig, void(*func)(int)))(int);
+
+int raise(int sig);
