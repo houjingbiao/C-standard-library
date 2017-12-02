@@ -359,3 +359,150 @@ int ferror(FILE *stream);
 //参数：
 //返回：该函数不返回任何值。
 void perror(const char *s);
+
+#include "stdlib.h"
+
+//内存相关函数
+//描述：分配所需的内存空间，并返回一个指向它的指针。malloc 和 calloc 之间的不同点是，malloc 不会设置内存为零，而 calloc 会设置分配的内存为零。
+//参数：
+//返回：该函数返回一个指针 ，指向已分配大小的内存。如果请求失败，则返回 NULL。
+void *calloc(size_t nitems, size_t size);
+
+//描述：分配所需的内存空间，并返回一个指向它的指针。
+//参数：
+//返回：该函数返回一个指针 ，指向已分配大小的内存。如果请求失败，则返回 NULL。
+void *malloc(size_t size);
+
+//描述：释放之前调用 calloc、malloc 或 realloc 所分配的内存空间。
+//参数：ptr -- 指针指向一个要释放内存的内存块，该内存块之前是通过调用 malloc、calloc 或 realloc 进行分配内存的。如果传递的参数是一个空指针，则不会执行任何动作。
+//返回：
+void free(void *ptr);
+
+//描述：尝试重新调整之前调用 malloc 或 calloc 所分配的 ptr 所指向的内存块的大小。
+//参数：
+//返回：该函数返回一个指针 ，指向重新分配大小的内存。如果请求失败，则返回 NULL。
+void *realloc(void *ptr, size_t size);
+
+//系统相关
+//描述：中止程序执行，直接从调用的地方跳出。
+//参数：
+//返回：
+void abort(void);
+
+//描述： 当程序正常终止时，调用指定的函数 func。您可以在任何地方注册你的终止函数，但它会在程序终止的时候被调用。
+//参数：
+//返回：如果函数成功注册，则该函数返回零，否则返回一个非零值。
+int atexit(void(*func)(void));
+
+//描述：立即终止调用进程。任何属于该进程的打开的文件描述符都会被关闭，该进程的子进程由进程 1 继承，初始化，且会向父进程发送一个 SIGCHLD 信号。
+//参数：status -- 返回给父进程的状态值。
+//返回：该函数不返回值。
+void exit(int status);
+
+//描述：搜索 name 所指向的环境字符串，并返回相关的值给字符串。
+//参数：
+//返回：该函数返回一个以 null 结尾的字符串，该字符串为被请求环境变量的值。如果该环境变量不存在，则返回 NULL。
+char* getenv(const char* name);
+
+//描述：把 command 指定的命令名称或程序名称传给要被命令处理器执行的主机环境，并在命令完成后返回。
+//参数：
+//返回：如果发生错误，则返回值为 -1，否则返回命令的状态。
+int system(const char *string);
+
+//排序
+//描述： 对 nitems 对象的数组执行二分查找，base 指向进行查找的数组，key 指向要查找的元素，size 指定数组中每个元素的大小。
+//数组的内容应根据 compar 所对应的比较函数升序排序。
+//参数：key -- 指向要查找的元素的指针，类型转换为 void*。
+//base -- 指向进行查找的数组的第一个对象的指针，类型转换为 void*。
+//返回：如果查找成功，该函数返回一个指向数组中匹配元素的指针，否则返回空指针。.
+void *bsearch(const void *key, const void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *));
+
+//描述：对数组进行排序。
+//参数：
+//返回：该函数不返回任何值。
+void * qsort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *));
+
+//基础数学相关
+
+//
+//描述：返回 x 的绝对值。
+//参数：
+//返回：
+int abs(int x);
+
+//描述：把 numer（分子）除以 denom（分母）。
+//参数：
+//返回：该函数返回定义在 <cstdlib> 中的结构中的值，该结构有两个成员，如 div_t:int quot; int rem;。
+div_t div(int number, int denom);
+
+//描述：返回 x 的绝对值。
+//参数：
+//返回：
+long int labs(long int x);
+
+//描述：把 numer（分子）除以 denom（分母）。
+//参数：
+//返回：该函数返回定义在 <cstdlib> 中的结构中的值，该结构有两个成员，如 ldiv_t:long quot; long rem;。
+ldiv_t ldiv(long int number, long int denom);
+
+//描述：返回一个范围在 0 到 RAND_MAX 之间的伪随机数。RAND_MAX 是一个常量，它的默认值在不同的实现中会有所不同，但是值至少是 32767。
+//参数：
+//返回：该函数返回一个范围在 0 到 RAND_MAX 之间的整数值。
+int rand(void);
+
+//描述：播种由函数 rand 使用的随机数发生器。
+//参数：
+//返回：该函数不返回任何值。
+void srand(unsigned int seed);
+
+//字符串相关
+//描述：返回参数 str 所指向的多字节字符的长度。
+//参数：str -- 指向多字节字符的第一个字节的指针。
+//n -- 要检查的字符长度的最大字节数。
+//返回：如果识别了一个非空宽字符，mblen() 函数返回 str 开始的多字节序列解析的字节数。
+//如果识别了一个空宽字符，则返回 0。如果识别了一个无效的多字节序列，或者不能解析一个完整的多字节字符，则返回 -1。
+int mblen(const char* str, size_t n);
+
+//描述：把参数 str 所指向的多字节字符的字符串转换为参数 pwcs 所指向的数组。
+//参数：pwcs -- 指向一个 wchar_t 元素的数组，数组长度足以存储一个最大字符长度的宽字符串。
+//str -- 要被转换的多字节字符字符串。
+//n -- 要被转换的最大字符数。
+//返回：该函数返回转换的字符数，不包括结尾的空字符。如果遇到一个无效的多字节字符，则返回 -1 值
+size_t mbstowcs(wchar_t *pwcs, const char *str, size_t n);
+
+//描述：把一个多字节序列转换为一个宽字符。
+//参数：pwc -- 指向类型为 wchar_t 对象的指针。
+//str -- 指向多字节字符的第一个字节的指针。
+//n -- 要被检查的最大字节数。
+//返回：如果 str 不为 NULL，mbtowc() 函数返回 str 开始消耗的字节数，如果指向一个空字节，则返回 0，如果操作失败，则返回 -1。
+//如果 str 为 NULL，如果编码具有移位状态，则 mbtowc() 函数返回非零，如果编码是无状态的，则返回零。
+int mbtowc(wchar_t *pwc, const char *str, size_t n);
+
+//描述： 把宽字符字符串 pwcs 转换为一个 str 开始的多字节字符串。最多会有 n 个字节被写入 str 中。
+//参数：str -- 指向一个 char 元素的数组，至少有 n 字节长。
+//pwcs -- 要被转换的宽字符字符串。
+//n -- 要被写入到 str 中的最大字节数。
+//返回：该函数返回转换和写入到 str 中的字节数，不包括结尾的空字符。如果遇到一个无效的多字节字符，则返回 -1 值。
+size_t wcstombs(char *str, const wchar_t *pwcs, size_t n);
+
+//描述：把宽字符 wchar 转换为它的多字节表示形式，并把它存储在 str 指向的字符数组的开头。
+//参数：str -- 一个指针，指向一个足以存储多字节字符的数组。
+//wchar -- 类型为 wchar_t 的宽字符。
+//返回：如果 str 不为 NULL，wctomb() 函数返回写入字节数组中的字节数。如果 wchar 不能被表示为一个多字节序列，则会返回 -1。
+//如果 str 为 NULL，如果编码具有移位状态，则 wctomb() 函数返回非零，如果编码是无状态的，则返回零。
+int wctomb(char *str, wchar_t wchar);
+
+
+#include "stddef.h"
+//定义了各种变量类型和宏。这些定义中的大部分也出现在其它头文件中。
+
+//变量类型
+ptrdiff_t //这是有符号整数类型，它是两个指针相减的结果。
+size_t //这是无符号整数类型，它是 sizeof 关键字的结果。
+wchar_t //这是一个宽字符常量大小的整数类型。
+
+//库宏
+NULL //
+
+//这会生成一个类型为 size_t 的整型常量，它是一个结构成员相对于结构开头的字节偏移量。成员是由 member - designator 给定的，结构的名称是在 type 中给定的。
+offset(type, member-designator)
