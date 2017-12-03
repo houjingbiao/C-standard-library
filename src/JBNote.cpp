@@ -512,48 +512,141 @@ size_t
 
 NULL
 
-//
+//描述：在参数 str 所指向的字符串的前 n 个字节中搜索第一次出现字符 c（一个无符号字符）的位置。
+//参数：c -- 以 int 形式传递的值，但是函数在每次字节搜索时是使用该值的无符号字符形式。
+//返回：该函数返回一个指向匹配字节的指针，如果在给定的内存区域未出现字符，则返回 NULL。
 void * memchr(const void *str, int c, size_t n);
 
+//描述：把 str1 和 str2 的前 n 个字节进行比较。
+//参数：
+//返回：如果返回值 < 0，则表示 str1 小于 str2。
+//如果返回值 > 0，则表示 str2 小于 str1。
+//如果返回值 = 0，则表示 str1 等于 str2。
 int memcmp(const void *str1, const void *src, size_t n);
 
-void memcpy(void *dest, const void*src, size_t n);
+//描述：从存储区 str2 复制 n 个字符到存储区 str1。
+//参数：
+//返回：该函数返回一个指向目标存储区 str1 的指针。
+void *memcpy(void *dest, const void*src, size_t n);
 
-void memmove(void *dest, const void*src, size_t n);
+//描述：从 str2 复制 n 个字符到 str1，但是在重叠内存块这方面，memmove() 是比 memcpy() 更安全的方法。
+//如果目标区域和源区域有重叠的话，memmove() 能够保证源串在被覆盖之前将重叠区域的字节拷贝到目标区域
+//中，复制后源区域的内容会被更改。如果目标区域与源区域没有重叠，则和 memcpy() 函数功能相同。
+//参数：
+//返回：返回一个指向目标存储区 str1 的指针。
+void *memmove(void *dest, const void*src, size_t n);
 
+//描述：复制字符 c（一个无符号字符）到参数 str 所指向的字符串的前 n 个字符。
+//参数： c-- 要被设置的值。该值以 int 形式传递，但是函数在填充内存块时是使用该值的无符号字符形式。
+//返回：该值返回一个指向存储区 str 的指针。
 void *memset(void *str, int c, size_t n);
 
-
+//描述： 把 src 所指向的字符串追加到 dest 所指向的字符串的结尾。
+//参数：dest -- 指向目标数组，该数组包含了一个 C 字符串，且足够容纳追加后的字符串。
+//src -- 指向要追加的字符串，该字符串不会覆盖目标字符串。
+//返回：该函数返回一个指向最终的目标字符串 dest 的指针。
 char *strcat(char *dest, const char *src);
 
+//描述：把 src 所指向的字符串追加到 dest 所指向的字符串的结尾，直到 n 字符长度为止。
+//参数：dest -- 指向目标数组，该数组包含了一个 C 字符串，且足够容纳追加后的字符串，包括额外的空字符。
+//src -- 要追加的字符串。
+//n -- 要追加的最大字符数。
+//返回：返回一个指向最终的目标字符串 dest 的指针。
 char *strncat(char *dest, const char *stc, size_t n);
 
+//描述：在参数 str 所指向的字符串中搜索第一次出现字符 c（一个无符号字符）的位置。
+//参数：str -- 要被检索的 C 字符串。
+//c -- 在 str 中要搜索的字符。
+//返回：在字符串 str 中第一次出现字符 c 的位置，如果未找到该字符则返回 NULL。
 char *strchr(const char *str, int c);
 
+//描述：把 str1 所指向的字符串和 str2 所指向的字符串进行比较。
+//参数：
+//返回：如果返回值 < 0，则表示 str1 小于 str2。
+//如果返回值 > 0，则表示 str2 小于 str1。
+//如果返回值 = 0，则表示 str1 等于 str2。
 int strcmp(const char *str1, const char *str2);
 
+//描述：把 str1 和 str2 进行比较，最多比较前 n 个字节。
+//参数：
+//返回：如果返回值 < 0，则表示 str1 小于 str2。
+//如果返回值 > 0，则表示 str2 小于 str1。
+//如果返回值 = 0，则表示 str1 等于 str2。
 int strncmp(const char *str1, const char *str2, size_t n);
 
+
+//描述：把 str1 和 str2 进行比较，结果取决于 LC_COLLATE 的位置设置。
+//参数：
+//返回：如果返回值 < 0，则表示 str1 小于 str2。
+//如果返回值 > 0，则表示 str2 小于 str1。
+//如果返回值 = 0，则表示 str1 等于 str2。
 int strcoll(const char *str1, const char *str2);
 
-int *strcpy(char *dest, const char *src);
+//描述：把 src 所指向的字符串复制到 dest。
+//参数：dest -- 指向用于存储复制内容的目标数组。
+//src -- 要复制的字符串。
+//返回：返回一个指向最终的目标字符串 dest 的指针。
+char *strcpy(char *dest, const char *src);
 
+//描述：把 src 所指向的字符串复制到 dest，最多复制 n 个字符。当 src 的长度小于 n 时，dest 的剩余部分将用空字节填充。
+//参数：dest -- 指向用于存储复制内容的目标数组。
+//src -- 要复制的字符串。
+//n -- 要从源中复制的字符数。
+//返回：返回最终复制的字符串。
+char *strncpy(char *dest, const char *srt, size_t n);
+
+//描述：检索字符串 str1 开头连续有几个字符都不含字符串 str2 中的字符。
+//参数：str1 -- 要被检索的 C 字符串。
+//str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
+//返回：返回 str1 开头连续都不含字符串 str2 中字符的字符数。
 size_t strcspn(const char *str1, const char *str2);
 
+//描述：从内部数组中搜索错误号 errnum，并返回一个指向错误消息字符串的指针。strerror 生成的错误字符串取决于开发平台和编译器。
+//参数：errnum -- 错误号，通常是 errno。
+//返回：一个指向错误字符串的指针，该错误字符串描述了错误 errnum。
 char *strerror(int errnum);
 
+//描述：计算字符串 str 的长度，直到空结束字符，但不包括空结束字符。
+//参数：str -- 要计算长度的字符串。
+//返回：字符串的长度。
 size_t strlen(const char* str);
 
+//描述： 检索字符串 str1 中第一个匹配字符串 str2 中字符的字符，不包含空结束字符。也就是说，依次检验字符串 str1 
+//中的字符，当被检验字符在字符串 str2 中也包含时，则停止检验，并返回该字符位置。
+//参数：str1 -- 要被检索的 C 字符串。
+//str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
+//返回：该函数返回 str1 中第一个匹配字符串 str2 中字符的字符数，如果未找到字符则返回 NULL。
 char *strpbrk(const char *str1, const char *str2);
 
+//描述：在参数 str 所指向的字符串中搜索最后一次出现字符 c（一个无符号字符）的位置。
+//参数：str -- C 字符串。
+//c -- 要搜索的字符。以 int 形式传递，但是最终会转换回 char 形式。
+//返回：返回 str 中最后一次出现字符 c 的位置。如果未找到该值，则函数返回一个空指针。
 char *strrchr(const char *str, int c);
 
+//描述：检索字符串 str1 中第一个不在字符串 str2 中出现的字符下标。
+//参数：str1 -- 要被检索的 C 字符串。
+//str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
+//返回：返回 str1 中第一个不在字符串 str2 中出现的字符下标。
 size_t strspn(const char* str1, const char* str2);
 
+//描述：在字符串 haystack 中查找第一次出现字符串 needle 的位置，不包含终止符 '\0'。
+//参数：haystack -- 要被检索的 C 字符串。
+//needle -- 在 haystack 字符串内要搜索的小字符串。
+//返回：返回在 haystack 中第一次出现 needle 字符串的位置，如果未找到则返回 null。
 char *strstr(const char *haystack, const char *needle);
 
+//描述：分解字符串 str 为一组字符串，delim 为分隔符。
+//参数：str -- 要被分解成一组小字符串的字符串。
+//delim -- 包含分隔符的 C 字符串。
+//返回：被分解的最后一个子字符串，如果没有可检索的字符串，则返回一个空指针。
 char *strtok(char *str, const char *delim);
 
+//描述：根据程序当前的区域选项中的 LC_COLLATE 来转换字符串 src 的前 n 个字符，并把它们放置在字符串 dest 中。
+//参数：dest -- 指向存储内容的目标数组的指针，如果参数 n 为 0，则它是一个空指针。
+//src -- 要被转换为当前区域设置的 C 字符串。
+//n -- 被复制到 str1 的最大字符数。
+//返回：返回被转换字符串的长度，不包括空结束字符。
 size_t strxfrm(char *dest, const char *str, size_t n);
 
 #include "signal.h"
