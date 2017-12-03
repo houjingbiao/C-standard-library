@@ -1,3 +1,4 @@
+#include <time.h>
 time_t;// 时间算术类型
 
 struct tm//时间组成类型
@@ -360,7 +361,7 @@ int ferror(FILE *stream);
 //返回：该函数不返回任何值。
 void perror(const char *s);
 
-#include "stdlib.h"
+#include <stdlib.h>
 
 //内存相关函数
 //描述：分配所需的内存空间，并返回一个指向它的指针。malloc 和 calloc 之间的不同点是，malloc 不会设置内存为零，而 calloc 会设置分配的内存为零。
@@ -493,7 +494,7 @@ size_t wcstombs(char *str, const wchar_t *pwcs, size_t n);
 int wctomb(char *str, wchar_t wchar);
 
 
-#include "stddef.h"
+#include <stddef.h>
 //定义了各种变量类型和宏。这些定义中的大部分也出现在其它头文件中。
 
 //变量类型
@@ -507,7 +508,7 @@ NULL //
 //这会生成一个类型为 size_t 的整型常量，它是一个结构成员相对于结构开头的字节偏移量。成员是由 member - designator 给定的，结构的名称是在 type 中给定的。
 offset(type, member - designator)
 
-#include "string.h"
+#include <string.h>
 size_t
 
 NULL
@@ -649,21 +650,228 @@ char *strtok(char *str, const char *delim);
 //返回：返回被转换字符串的长度，不包括空结束字符。
 size_t strxfrm(char *dest, const char *str, size_t n);
 
-#include "signal.h"
+#include <signal.h>
 //定义了一个变量类型 sig_atomic_t、两个函数调用和一些宏来处理程序执行期间报告的不同信号。
 sig_atomic_t
 
-SIG_DFL
-SIG_ERR
-SIG_IGN
+SIG_DFL  // 默认的信号处理程序。
+SIG_ERR  // 
+SIG_IGN  // 忽视信号。
 
-SIGABRT
-SIGFPE
-SIGILL
-SIGINT
-SIGSEGV //
-SIGTERM //发送给本程序的终止请求信号。
+SIGABRT //(Signal Abort) 程序异常终止。
+SIGBREAK// Ctrl-Break sequence
+SIGFPE  //(Signal Floating - Point Exception) 算术运算出错，如除数为 0 或溢出（不一定是浮点运算）。
+SIGILL  //(Signal Illegal Instruction) 非法函数映象，如非法指令，通常是由于代码中的某个变体或者尝试执行数据导致的。
+SIGINT  //(Signal Interrupt) 中断信号，如 ctrl-C，通常由用户生成。
+SIGSEGV //(Signal Segmentation Violation) 非法访问存储器，如访问不存在的内存单元。
+SIGTERM //(Signal Terminate) 发送给本程序的终止请求信号。
 
+//描述：设置一个函数来处理信号，即带有 sig 参数的信号处理程序。
+//参数：sig -- 在信号处理程序中作为变量使用的信号码。下面是一些重要的标准信号常量：
+//返回：返回信号处理程序之前的值，当发生错误时返回 SIG_ERR。
 void (*signal(int sig, void(*func)(int)))(int);
+sighandler_t signal(int signum, sighandler_t handler);
+void signal(int sig, void(*func)(int));
 
+//描述：促使生成信号 sig。sig 参数与 SIG 宏兼容。
+//参数：要发送的信号码。
+//返回：如果成功该函数返回零，否则返回非零。
 int raise(int sig);
+
+#include <stdarg.h>
+//定义了一个变量类型 va_list 和三个宏，这三个宏可用于在参数个数未知（即参数个数可变）时获取函数中的参数。
+
+//变量
+va_list //这是一个适用于 va_start()、va_arg() 和 va_end() 这三个宏存储信息的类型。
+
+//三个宏
+//这个宏初始化 ap 变量，它与 va_arg 和 va_end 宏是一起使用的。last_arg 是最后一个传递给函数的已知的固定参数，即省略号之前的参数。
+void va_start(va_list ap, last_arg)
+
+//这个宏检索函数参数列表中类型为 type 的下一个参数。
+type va_arg(va_list ap, type)
+
+//这个宏允许使用了 va_start 宏的带有可变参数的函数返回。如果在从函数返回之前没有调用 va_end，则结果为未定义。
+void va_end(va_list ap)
+
+//注意：虽然这三个宏都有返回参数实际上并不是函数那样的返回参数，在window上的定义过程是这样的：
+#define va_start __crt_va_start
+#define va_arg   __crt_va_arg
+#define va_end   __crt_va_end
+#define va_copy(destination, source) ((destination) = (source))
+
+#define __crt_va_start_a(ap, v) ((void)(ap = (va_list)_ADDRESSOF(v) + _INTSIZEOF(v)))
+#define __crt_va_arg(ap, t)     (*(t*)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)))
+#define __crt_va_end(ap)        ((void)(ap = (va_list)0))
+
+#include <setjmp.h>
+//定义了宏 setjmp()、函数 longjmp() 和变量类型 jmp_buf，该变量类型会绕过正常的函数调用和返回规则。
+
+//库变量
+jmp_buf //这是一个用于存储宏setjmp()和函数longjmp()相关信息的数组类型
+
+//库宏
+
+//描述：创建本地的jmp_buf缓冲区并且初始化，用于将来跳转回此处。这个子程序保存程序的调用环境于env参
+//数所指的缓冲区，env将被longjmp使用。如果是从setjmp直接调用返回，setjmp返回值为0。如果是从longjmp
+//恢复的程序调用环境返回，setjmp返回非零值。
+//参数：environment -- 这是一个类型为 jmp_buf 的用于存储环境信息的对象。
+//返回：这个宏可能不只返回一次。第一次，在直接调用它时，它总是返回零。当调用 longjmp 时带有设置的
+//环境信息，这个宏会再次返回，此时它返回的值会传给 longjmp 作为第二个参数。
+//这个宏把当前环境保存在变量environment中，以便函数longjmp()后续使用。如果这个宏直接从宏调用中返回，则它会返回零，
+int setjmp(jmp_buf environment);
+
+
+//描述：恢复最近一次调用 setjmp() 宏时保存的环境，jmp_buf 参数的设置是由之前调用 setjmp() 生成的。
+//参数：environment -- 这是一个类型为 jmp_buf 的对象，包含了调用 setjmp 时存储的环境信息。
+//value -- 这是 setjmp 表达式要判断的值。
+//返回：不返回任何值。
+void longjmp(jmp_buf environment, int value);
+
+#include <math.h>
+//定义了各种数学函数和一个宏。在这个库中所有可用的功能都带有一个 double 类型的参数，且都返回 double 类型的结果。
+//库宏
+HUGE_VAL
+
+//库函数
+double acos(double x);
+
+double asin(double x);
+
+double atan(double x);
+
+double atan2(double y, double x);
+
+double cos(double x);
+
+double cosh(double x);
+
+double sin(double x);
+
+double sinh(double x);
+
+double tanh(double x);
+
+double exp(double x);
+
+//把浮点数 x 分解成尾数和指数。返回值是尾数，并将指数存入 exponent 中。所得的值是 x = mantissa * 2 ^ exponent。
+double frexp(double x, int *exponnet);
+
+double ldexp(double x, int exponent);
+
+double log(double x);
+
+double log10(double x);
+
+double modf(double x, double *integer);
+
+double pow(double x, double y)
+
+double sqrt(double x);
+
+double ceil(double x);
+
+double fabs(double x);
+
+double floor(double x);
+
+double fmod(double x, double y);
+
+
+#include <limits.h>
+//决定了各种变量类型的各种属性。定义在该头文件中的宏限制了各种变量类型（比如 char、int 和 long）的值。
+//这些限制指定了变量不能存储任何超出这些限制的值，例如一个无符号可以存储的最大值是 255。
+CHAR_BIT
+SCHAR_MIN
+SCHAR_MAX
+UCHAR_MAX
+CHAR_MIN
+CHAR_MAX
+MB_LEN_MAX
+SHRT_MIN
+SHRT_MAX
+USHRT_MAX
+INT_MIN
+INT_MAX
+UINT_MAX
+LONG_MIN
+LONG_MAX
+ULONG_MAX
+
+#include <assert.h>
+//提供了一个名为 assert 的宏，它可用于验证程序做出的假设，并在假设为假时输出诊断消息。
+//已定义的宏 assert 指向另一个宏 NDEBUG，宏 NDEBUG 不是 <assert.h> 的一部分。如果已在
+//引用 <assert.h> 的源文件中定义 NDEBUG 为宏名称，则 assert 宏的定义如下：
+#define assert(ignore) ((void)0)
+
+//库宏
+//不是一个函数，可用于在 C 程序中添加诊断。
+//expression -- 这可以是一个变量或任何 C 表达式。如果 expression 为 TRUE，assert() 
+//不执行任何动作。如果 expression 为 FALSE，assert() 会在标准错误 stderr 上显示错误消息，并中止程序执行。
+void assert(int expression);
+
+
+#include <errno.h>
+//定义了整数变量 errno，它是通过系统调用设置的，在错误事件中的某些库函数表明了什么发生了错误。该宏扩展为类型为 int 的可更改的左值，因此它可以被一个程序读取和修改。
+//在程序启动时，errno 设置为零，C 标准库中的特定函数修改它的值为一些非零值以表示某些类型的错误。您也可以在适当的时候修改它的值或重置为零。
+//errno.h 头文件也顶了以一系列表示不同错误代码的宏，这些宏应扩展为类型为 int 的整数常量表达式。
+
+//库宏
+//是通过系统调用设置的，在错误事件中的某些库函数表明了什么发生了错误。
+//一定要注意这是一个宏，既不是函数，也不是变量，实际上是将这个宏定义成为一个系统调用，也可以在外部进行设置如errno = 0
+extern int errno;
+
+//库宏 EDOM 表示一个域错误，它在输入参数超出数学函数定义的域时发生，errno 被设置为 EDOM。
+EDOM Domain Error;
+
+//库宏 ERANGE 表示一个范围错误，它在输入参数超出数学函数定义的范围时发生，errno 被设置为 ERANGE。
+ERANGE Range Error;
+
+#include <locale.h>
+//定义了特定地域的设置，比如日期格式和货币符号。接下来我们将介绍一些宏，以及一个重要的结构 struct lconv 和两个重要的函数。
+
+//库宏
+LC_ALL
+LC_COLLATE
+LC_CTYPE
+LC_MONETARY
+LC_NUMERIC
+LC_TIME
+
+//库函数
+char *setlocale(int category, const char *locale);
+
+struct lconv *localeconv(void);
+
+
+//库结构
+typedef struct {
+	char *decimal_point;
+	char *thousands_sep;
+	char *grouping;
+	char *int_curr_symbol;
+	char *currency_symbol;
+	char *mon_decimal_point;
+	char *mon_thousands_sep;
+	char *mon_grouping;
+	char *positive_sign;
+	char *negative_sign;
+	char int_frac_digits;
+	char frac_digits;
+	char p_cs_precedes;
+	char p_sep_by_space;
+	char n_cs_precedes;
+	char n_sep_by_space;
+	char p_sign_posn;
+	char n_sign_posn;
+} lconv
+
+
+#include <ctype.h>
+//提供了一些函数，可用于测试和映射字符。
+//这些函数接受 int 作为参数，它的值必须是 EOF 或表示为一个无符号字符。
+//如果参数 c 满足描述的条件，则这些函数返回非零（true）。如果参数 c 不满足描述的条件，则这些函数返回零。
+
+#include <float.h>
+
+
