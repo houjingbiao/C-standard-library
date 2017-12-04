@@ -872,6 +872,122 @@ typedef struct {
 //这些函数接受 int 作为参数，它的值必须是 EOF 或表示为一个无符号字符。
 //如果参数 c 满足描述的条件，则这些函数返回非零（true）。如果参数 c 不满足描述的条件，则这些函数返回零。
 
+int isalnum(int c);
+//该函数检查所传的字符是否是字母和数字。
+
+int isalpha(int c);
+//该函数检查所传的字符是否是字母。
+
+int iscntrl(int c);
+//该函数检查所传的字符是否是控制字符。
+
+int isdigit(int c);
+//该函数检查所传的字符是否是十进制数字。
+
+int isgraph(int c);
+//该函数检查所传的字符是否有图形表示法。
+
+int islower(int c);
+//该函数检查所传的字符是否是小写字母。
+
+int isprint(int c);
+//该函数检查所传的字符是否是可打印的。
+
+int ispunct(int c);
+//该函数检查所传的字符是否是标点符号字符。
+
+int isspace(int c);
+//该函数检查所传的字符是否是空白字符。
+
+int isupper(int c);
+//该函数检查所传的字符是否是大写字母。
+
+int isxdigit(int c);
+//该函数检查所传的字符是否是十六进制数字。
+
+//两个转换函数
+int tolower(int c);
+//该函数把大写字母转换为小写字母。
+
+int toupper(int c);
+//该函数把小写字母转换为大写字母。
+
+//标点符号字符集合
+!" # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+
+//空格字符
+制表符、换行符、垂直制表符、换页符、回车符、空格符的集合。
+
+//可打印字符
+字母数字字符、标点符号字符和空格字符的集合。
+
+//控制字符
+在 ASCII 编码中，这些字符的八进制代码是从 000 到 037，以及 177（DEL）。
+
+//空白字符
+包括空格符和制表符。
+
 #include <float.h>
+//包含了一组与浮点值相关的依赖于平台的常量。这些常量是由 ANSI C 提出的，这让程序更具有可移植性。在讲解这些常量之前，最好先弄清楚浮点数是由下面四个元素组成的：
+S //sign符号(+/ -)
+b //base指数表示的基数，2 表示二进制，10 表示十进制，16 表示十六进制，等等...
+e //exponent指数，一个介于最小值 emin 和最大值 emax 之间的整数。
+p //precision精度，基数 b 的有效位数
+float - point = (S)p*b^e
+//或者
+float - point = (+/ -)precision * base^exponent
 
+//库宏
+FLT_ROUNDS //定义浮点加法的舍入模式，它可以是下列任何一个值：
+		   //-1 - 无法确定
+		   // 0 - 趋向于零
+		   // 1 - 去最近的值
+		   // 2 - 趋向于正无穷
+		   // 3 - 趋向于负无穷
 
+FLT_RADIX 2 //这个宏定义了指数表示的基数。基数 2 表示二进制，基数 10 表示十进制，基数 16 表示十六进制。
+
+			//这些宏定义了 FLT_RADIX 基数中的位数。
+FLT_MANT_DIG
+DBL_MANT_DIG
+LDBL_MANT_DIG
+
+//这些宏定义了舍入后不会改变表示的十进制数字的最大值（基数 10）。
+FLT_DIG 6
+DBL_DIG 10
+LDBL_DIG 10
+
+//这些宏定义了基数为 FLT_RADIX 时的指数的最小负整数值。
+FLT_MIN_EXP
+DBL_MIN_EXP
+LDBL_MIN_EXP
+
+//这些宏定义了基数为 10 时的指数的最小负整数值。
+FLT_MIN_10_EXP -37
+DBL_MIN_10_EXP -37
+LDBL_MIN_10_EXP -37
+
+//这些宏定义了基数为 FLT_RADIX 时的指数的最大整数值。
+FLT_MAX_EXP
+DBL_MAX_EXP
+LDBL_MAX_EXP
+
+//这些宏定义了基数为 10 时的指数的最大整数值。
+FLT_MAX_10_EXP +37
+DBL_MAX_10_EXP +37
+LDBL_MAX_10_EXP +37
+
+//这些宏定义最大的有限浮点值。
+FLT_MAX 1E+37
+DBL_MAX 1E+37
+LDBL_MAX 1E+37
+
+//这些宏定义了可表示的最小有效数字。
+FLT_EPSILON 1E-5
+DBL_EPSILON 1E-9
+LDBL_EPSILON 1E-9
+
+//这些宏定义了最小的浮点值。
+FLT_MIN 1E-37
+DBL_MIN 1E-37
+LDBL_MIN 1E-37
