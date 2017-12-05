@@ -596,7 +596,7 @@ char *strcpy(char *dest, const char *src);
 //返回：返回最终复制的字符串。
 char *strncpy(char *dest, const char *srt, size_t n);
 
-//描述：检索字符串 str1 开头连续有几个字符都不含字符串 str2 中的字符。
+//描述：检索字符串 str1 开头连续有几个字符都不含字符串 str2 中的字符。其中spn的含义是span的意思，c是continual的连续的
 //参数：str1 -- 要被检索的 C 字符串。
 //str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
 //返回：返回 str1 开头连续都不含字符串 str2 中字符的字符数。
@@ -625,7 +625,7 @@ char *strpbrk(const char *str1, const char *str2);
 //返回：返回 str 中最后一次出现字符 c 的位置。如果未找到该值，则函数返回一个空指针。
 char *strrchr(const char *str, int c);
 
-//描述：检索字符串 str1 中第一个不在字符串 str2 中出现的字符下标。
+//描述：检索字符串 str1 中第一个不在字符串 str2 中出现的字符下标。其中spn的含义是span
 //参数：str1 -- 要被检索的 C 字符串。
 //str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
 //返回：返回 str1 中第一个不在字符串 str2 中出现的字符下标。
