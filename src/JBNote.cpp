@@ -292,9 +292,9 @@ int putchar(int c);
 //返回：
 int puts(const char *s);
 
-//描述：把字符 char（一个无符号字符）推入到指定的流 stream 中，以便它是下一个被读取到的字符。
+//描述：把字符 char（一个无符号字符）推入到指定的流 stream 中，以便它是下一个被读取到的字符。对只读的流对象仍然适用，这个函数只是对流的缓存进行改写，并不修改文件
 //参数：
-//返回：
+//返回：如果成功，则返回被推入的字符，否则返回 EOF，且流 stream 保持不变。
 int ungetc(int c, FILE *stream);
 
 //描述：从给定流 stream 读取数据到 ptr 所指向的数组中。
@@ -506,7 +506,20 @@ wchar_t //这是一个宽字符常量大小的整数类型。
 NULL //
 
 //这会生成一个类型为 size_t 的整型常量，它是一个结构成员相对于结构开头的字节偏移量。成员是由 member - designator 给定的，结构的名称是在 type 中给定的。
-offset(type, member - designator)
+//member-designator并不是一个减法，而是一个组合单词指的是成员
+offsetof(type, member-designator)
+
+//在vc版本的库里这个宏的实现是这样的
+// Define offsetof macro
+#if defined(_MSC_VER) && !defined(_CRT_USE_BUILTIN_OFFSETOF)
+#ifdef __cplusplus
+#define offsetof(s,m) ((size_t)&reinterpret_cast<char const volatile&>((((s*)0)->m)))
+#else
+#define offsetof(s,m) ((size_t)&(((s*)0)->m))
+#endif
+#else
+#define offsetof(s,m) __builtin_offsetof(s,m)
+#endif
 
 #include <string.h>
 size_t
@@ -523,19 +536,19 @@ void * memchr(const void *str, int c, size_t n);
 //返回：如果返回值 < 0，则表示 str1 小于 str2。
 //如果返回值 > 0，则表示 str2 小于 str1。
 //如果返回值 = 0，则表示 str1 等于 str2。
-int memcmp(const void *str1, const void *src, size_t n);
+int memcmp(const void *str1, const void *str2, size_t n);
 
 //描述：从存储区 str2 复制 n 个字符到存储区 str1。
 //参数：
 //返回：该函数返回一个指向目标存储区 str1 的指针。
-void *memcpy(void *dest, const void*src, size_t n);
+void *memcpy(void *dest, const void *src, size_t n);
 
 //描述：从 str2 复制 n 个字符到 str1，但是在重叠内存块这方面，memmove() 是比 memcpy() 更安全的方法。
 //如果目标区域和源区域有重叠的话，memmove() 能够保证源串在被覆盖之前将重叠区域的字节拷贝到目标区域
 //中，复制后源区域的内容会被更改。如果目标区域与源区域没有重叠，则和 memcpy() 函数功能相同。
 //参数：
 //返回：返回一个指向目标存储区 str1 的指针。
-void *memmove(void *dest, const void*src, size_t n);
+void *memmove(void *dest, const void *src, size_t n);
 
 //描述：复制字符 c（一个无符号字符）到参数 str 所指向的字符串的前 n 个字符。
 //参数： c-- 要被设置的值。该值以 int 形式传递，但是函数在填充内存块时是使用该值的无符号字符形式。
@@ -544,16 +557,16 @@ void *memset(void *str, int c, size_t n);
 
 //描述： 把 src 所指向的字符串追加到 dest 所指向的字符串的结尾。
 //参数：dest -- 指向目标数组，该数组包含了一个 C 字符串，且足够容纳追加后的字符串。
-//src -- 指向要追加的字符串，该字符串不会覆盖目标字符串。
+//src -- 指向要追加的字符串，该字符串不会覆盖目标字符串。如果src对dest有覆盖，则会运行时报错。这里有一个问题就是这种运行时报错是怎么实现的？
 //返回：该函数返回一个指向最终的目标字符串 dest 的指针。
 char *strcat(char *dest, const char *src);
 
 //描述：把 src 所指向的字符串追加到 dest 所指向的字符串的结尾，直到 n 字符长度为止。
 //参数：dest -- 指向目标数组，该数组包含了一个 C 字符串，且足够容纳追加后的字符串，包括额外的空字符。
-//src -- 要追加的字符串。
+//src -- 要追加的字符串。没有像strcat中那样对src的要求。
 //n -- 要追加的最大字符数。
 //返回：返回一个指向最终的目标字符串 dest 的指针。
-char *strncat(char *dest, const char *stc, size_t n);
+char *strncat(char *dest, const char *src, size_t n);
 
 //描述：在参数 str 所指向的字符串中搜索第一次出现字符 c（一个无符号字符）的位置。
 //参数：str -- 要被检索的 C 字符串。
@@ -596,11 +609,11 @@ char *strcpy(char *dest, const char *src);
 //返回：返回最终复制的字符串。
 char *strncpy(char *dest, const char *srt, size_t n);
 
-//描述：检索字符串 str1 开头连续有几个字符都不含字符串 str2 中的字符。其中spn的含义是span的意思，c是continual的连续的
-//参数：str1 -- 要被检索的 C 字符串。
-//str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
-//返回：返回 str1 开头连续都不含字符串 str2 中字符的字符数。
-size_t strcspn(const char *str1, const char *str2);
+//描述：检索字符串 str 开头连续有几个字符都不含字符串 reject 中的字符。函数名是string complementary span的简写
+//参数：str -- 要被检索的 C 字符串。
+//reject -- 该字符串包含了要在 str1 中进行匹配的字符列表。
+//返回：返回 str 开头连续都不含字符串 reject 中字符的字符数。
+size_t strcspn(const char *str, const char *reject);
 
 //描述：从内部数组中搜索错误号 errnum，并返回一个指向错误消息字符串的指针。strerror 生成的错误字符串取决于开发平台和编译器。
 //参数：errnum -- 错误号，通常是 errno。
@@ -625,11 +638,11 @@ char *strpbrk(const char *str1, const char *str2);
 //返回：返回 str 中最后一次出现字符 c 的位置。如果未找到该值，则函数返回一个空指针。
 char *strrchr(const char *str, int c);
 
-//描述：检索字符串 str1 中第一个不在字符串 str2 中出现的字符下标。其中spn的含义是span
-//参数：str1 -- 要被检索的 C 字符串。
-//str2 -- 该字符串包含了要在 str1 中进行匹配的字符列表。
-//返回：返回 str1 中第一个不在字符串 str2 中出现的字符下标。
-size_t strspn(const char* str1, const char* str2);
+//描述：检索字符串 str 中第一个不在字符串 accept 中出现的字符下标。其中spn的含义是span
+//参数：str -- 要被检索的 C 字符串。
+//accept -- 该字符串包含了要在 str1 中进行匹配的字符列表。
+//返回：返回 str 中第一个不在字符串 accept 中出现的字符下标。
+size_t strspn(const char *str, const char * accept);
 
 //描述：在字符串 haystack 中查找第一次出现字符串 needle 的位置，不包含终止符 '\0'。
 //参数：haystack -- 要被检索的 C 字符串。
